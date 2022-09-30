@@ -187,19 +187,9 @@ test("test standard GET form submission", async ({ page }) => {
 
 test("test standard GET HTMLFormElement.requestSubmit() with Turbo Action", async ({ page }) => {
   await page.evaluate(() => {
-    const formControl = document.querySelector<HTMLSelectElement>("#external-input input[type=hidden]")
+    const formControl = document.querySelector<HTMLSelectElement>("#external-input")
 
-    if (formControl && formControl.form) {
-      formControl.addEventListener('change', (event) => {
-          formControl.form.requestSubmit();
-      })
-
-      formControl.value = 'Hello from a replace Visit'
-
-      var event = new Event('change');
-      formControl.dispatchEvent(event);
-
-    }
+    if (formControl && formControl.form) formControl.form.requestSubmit()
   })
   await nextEventNamed(page, "turbo:load")
 

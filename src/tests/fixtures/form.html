@@ -88,9 +88,7 @@
       </form>
       <turbo-frame id="turbo-frame-in-frame-external">
         <form id="form-with-external-inputs" action="/src/tests/fixtures/frames.html" data-turbo-frame="frame" data-turbo-action="advance"></form>
-        <div id="external-input">
-          <input type="hidden" form="form-with-external-inputs" name="greeting" value="Original text">
-        </div>
+        <input id="external-input" type="hidden" form="form-with-external-inputs" name="greeting" value="Hello from a replace Visit">
       </turbo-frame>
     </div>
     <hr>
