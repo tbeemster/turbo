@@ -185,6 +185,30 @@ test("test standard GET form submission", async ({ page }) => {
   assert.equal(getSearchParam(page.url(), "greeting"), "Hello from a form")
 })
 
+test("test standard GET HTMLFormElement.requestSubmit() with Turbo Action", async ({ page }) => {
+  await page.evaluate(() => {
+    const formControl = document.querySelector<HTMLSelectElement>("#external-input input[type=hidden]")
+
+    if (formControl && formControl.form) {
+      formControl.addEventListener('change', (event) => {
+          formControl.form.requestSubmit();
+      })
+
+      formControl.value = 'Hello from a replace Visit'
+
+      var event = new Event('change');
+      formControl.dispatchEvent(event);
+
+    }
+  })
+  await nextEventNamed(page, "turbo:load")
+
+  assert.equal(await page.textContent("#frame h2"), "Frames: #frame")
+  assert.equal(await visitAction(page), "advance")
+  assert.equal(pathname(page.url()), "/src/tests/fixtures/frames.html")
+  assert.equal(getSearchParam(page.url(), "greeting"), "Hello from a replace Visit")
+})
+
 test("test standard GET form submission with [data-turbo-stream] declared on the form", async ({ page }) => {
   await page.click("#standard-get-form-with-stream-opt-in-submit")
 
